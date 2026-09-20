@@ -98,7 +98,7 @@ When the same system needs multiple audiences, create separate diagrams — not 
 Determine where the diagram's facts come from.
 
 If invoked by another analysis skill:
-1. Use the supplied model and evidence as the source of truth.
+1. Use the supplied model, evidence, and uncertainty as the source of truth.
 2. Identify the components, relationships, flows, states, and boundaries
    that need visualization.
 3. Preserve names and terminology from the source analysis.
