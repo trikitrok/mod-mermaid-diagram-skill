@@ -72,13 +72,13 @@ A diagram isn't formatted text. It's a visual argument that shows relationships,
 Before anything else, determine what level of detail this diagram needs:
 
 - **Simple/Conceptual**: Abstract shapes, labels, relationships. Use when explaining a mental model, the audience already knows the details, or the concept IS the abstraction.
-- **Comprehensive/Technical**: Concrete examples, code snippets, real data. Use when diagramming a real system, creating educational content, or showing how technologies integrate.
+- **Comprehensive/Technical:** Concrete examples, code snippets, and real data when supplied or verified by the source analysis. Never invent concrete details solely to make a diagram more comprehensive.
 
 | Simple Diagram | Comprehensive Diagram |
 |----------------|----------------------|
 | Generic labels: "Input" → "Process" → "Output" | Shows what the input/output actually looks like |
 | Named boxes: "API", "Database", "Client" | Named boxes + real requests/responses |
-| "Events" or "Messages" label | Real event/message names from the spec |
+| "Events" or "Messages" label | Verified event/message names when available |
 | ~30 seconds to explain | ~2-3 minutes of teaching content |
 | Viewer learns the structure | Viewer learns the structure AND the details |
 
@@ -214,13 +214,13 @@ Do **not** use these types — they lack structural argument capability or are t
 
 ## Render & Validate (MANDATORY)
 
-**How to render:**
-Run `references/render_mermaid.sh` from this skill's installed directory:
+How to render: Run `references/render_mermaid.sh` from this skill's installed directory:
 
-    bash <skill-dir>/references/render_mermaid.sh <path.mmd> [output.png]
+```bash
+bash <skill-dir>/references/render_mermaid.sh <path.mmd> [output.png]
+```
 
-Resolve `<skill-dir>` from the location of this `SKILL.md`; do not assume
-a Claude-specific installation path.
+Resolve `<skill-dir>` from the location of this `SKILL.md`; do not assume a Claude-specific installation path.
 
 First run downloads mmdc via npx — may take ~30s.
 
@@ -257,7 +257,7 @@ First run downloads mmdc via npx — may take ~30s.
 
 Before finalizing any diagram:
 
-**Source Integrity**
+### Source Integrity
 
 Check first for technical diagrams:
 
@@ -268,28 +268,31 @@ Check first for technical diagrams:
 5. No invented APIs, calls, dependencies, states, payloads, or behavior?
 6. Concrete evidence used only when actually supplied or verified?
 
-**Diagram Design:**
-6. Isomorphism Test: does visual structure mirror the concept's behavior?
-7. Argument: does the diagram SHOW something text alone couldn't?
-8. Variety: does each major concept use a different visual pattern or node shape?
-9. Diagram type chosen intentionally (matches the concept's pattern from decision matrix)?
-10. Node IDs are readable, not single letters?
+### Diagram Design
 
-**Mermaid-Specific:**
-11. `classDef` used for semantic styling (trigger, success, error, ai, decision)?
-12. Every `classDef` sets `fill`, `stroke`, AND `color`? (never omit `color` — see `references/mermaid-theme.md` Section 1 for dark/light mode guidelines)
-13. Output format correct (`.mmd` vs fenced block)?
-14. No excluded diagram types used? (Excluded: Pie Chart, Gantt, Git Graph, XY Chart, User Journey — see Decision Matrix above)
-15. Node/edge declaration order follows reading direction (minimize line crossings)?
-16. No single node has 5+ edges without a dispatcher split?
-17. Back-edges isolated (cycles handled in State diagram or contained subgraph)?
+1. **Isomorphism Test:** Does visual structure mirror the concept's behavior?
+2. **Argument:** Does the diagram SHOW something text alone couldn't?
+3. **Variety:** Does each major concept use a different visual pattern or node shape?
+4. Diagram type chosen intentionally (matches the concept's pattern from decision matrix)?
+5. Node IDs are readable, not single letters?
 
-**Render Validation (mandatory):**
-18. Syntax validated: mmdc runs without error?
-19. PNG viewed: layout visually inspected?
-20. No overlapping labels or crossed text?
-21. Eye flows naturally through the diagram?
-22. Line crossings minimized (tried reordering + rankDir if needed)?
+### Mermaid-Specific
 
+1. `classDef` used for semantic styling (trigger, success, error, ai, decision)?
+2. Every `classDef` sets `fill`, `stroke`, AND `color`?
+3. Output format correct (`.mmd` vs fenced block)?
+4. No excluded diagram types used?
+5. Node/edge declaration order follows reading direction?
+6. No single node has 5+ edges without a dispatcher split?
+7. Back-edges isolated where appropriate?
+
+### Render Validation (mandatory)
+
+1. Syntax validated: `mmdc` runs without error?
+2. PNG viewed and layout visually inspected?
+3. No overlapping labels or crossed text?
+4. Eye flows naturally through the diagram?
+5. Line crossings minimized?
+   
 **Cleanup**
 Once a user is happy with the output, remove any temporary output like pngs or mmd files.
