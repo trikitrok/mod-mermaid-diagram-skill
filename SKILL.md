@@ -54,8 +54,7 @@ A diagram isn't formatted text. It's a visual argument that shows relationships,
 
 **The Isomorphism Test**: If you removed all text, would the structure alone communicate the concept? If not, redesign.
 
-**The Education Test**: Could someone learn something concrete from this diagram, or does it just label boxes? A good diagram teaches—it shows actual formats, real event names, concrete examples.
-
+**The Education Test**: Could someone learn something concrete from this diagram, or does it just label boxes? A good diagram teaches—it uses verified formats, event names, and concrete examples when available.
 | Bad (Displaying) | Good (Arguing) |
 |------------------|----------------|
 | 5 equal boxes with labels | Each concept has a shape that mirrors its behavior |
@@ -72,12 +71,14 @@ A diagram isn't formatted text. It's a visual argument that shows relationships,
 Before anything else, determine what level of detail this diagram needs:
 
 - **Simple/Conceptual**: Abstract shapes, labels, relationships. Use when explaining a mental model, the audience already knows the details, or the concept IS the abstraction.
-- **Comprehensive/Technical:** Concrete examples, code snippets, and real data when supplied or verified by the source analysis. Never invent concrete details solely to make a diagram more comprehensive.
+- **Comprehensive/Technical:** Concrete examples, code snippets, and real
+  data when supplied or verified by the source analysis. Never invent
+  concrete details solely to make a diagram more comprehensive.
 
 | Simple Diagram | Comprehensive Diagram |
 |----------------|----------------------|
 | Generic labels: "Input" → "Process" → "Output" | Shows what the input/output actually looks like |
-| Named boxes: "API", "Database", "Client" | Named boxes + real requests/responses |
+| Named boxes: "API", "Database", "Client" | Named boxes + verified requests/responses when available |
 | "Events" or "Messages" label | Verified event/message names when available |
 | ~30 seconds to explain | ~2-3 minutes of teaching content |
 | Viewer learns the structure | Viewer learns the structure AND the details |
@@ -293,6 +294,7 @@ Check first for technical diagrams:
 3. No overlapping labels or crossed text?
 4. Eye flows naturally through the diagram?
 5. Line crossings minimized?
-   
-**Cleanup**
-Once a user is happy with the output, remove any temporary output like pngs or mmd files.
+
+### Cleanup
+
+Once the user is happy with the output, remove temporary output such as rendered PNGs or intermediate `.mmd` files that are no longer needed.
