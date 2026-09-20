@@ -1,6 +1,6 @@
 ---
 name: mermaid-diagram
-description: Create Mermaid diagram files that make visual arguments. Use when the user wants to visualize workflows, architectures, or concepts.
+description: Create clear, validated Mermaid diagrams from supplied facts, models, workflows, architectures, and concepts. Use when another skill or the user needs information visualized as Mermaid.
 ---
 
 # Mermaid Diagram Creator
@@ -20,6 +20,29 @@ Generate `.mmd` files (or fenced ` ```mermaid ` blocks in `.md` files when embed
 ## Customization
 
 To customize brand styles, edit `references/mermaid-theme.md` — this is the single source of truth for all theming (semantic node styles and dark/light mode color guidelines).
+
+---
+
+## Source of Truth
+
+This skill is a visualization specialist, not an analysis or discovery skill.
+
+When another skill or agent supplies components, relationships, flows,
+states, dependencies, evidence, or other verified findings:
+
+- Treat those findings as authoritative.
+- Do not independently re-analyze the codebase or source material.
+- Do not invent components, relationships, dependencies, states,
+  protocols, calls, or runtime behavior.
+- Preserve uncertainty and qualifications from the source analysis.
+- You may reorganize information visually, but must not change its
+  semantic meaning.
+- If information required for the diagram is missing, omit it or
+  identify the gap rather than inferring unsupported facts.
+
+When the user directly asks for a diagram without supplying an analyzed
+model, gather only the information necessary to construct the requested
+diagram.
 
 ---
 
@@ -69,25 +92,34 @@ Match density to audience:
 
 When the same system needs multiple audiences, create separate diagrams — not one diagram that tries to serve everyone.
 
-### Step 1: Research (Comprehensive diagrams only)
+### Step 1: Establish the Input Model
 
-**Before drawing anything technical, research the actual specifications.**
+Determine where the diagram's facts come from.
 
-If you're diagramming a protocol, API, or framework:
-1. Look up the actual JSON/data formats
-2. Find the real event names, method names, or API endpoints
-3. Understand how the pieces actually connect
-4. Use real terminology, not generic placeholders
+If invoked by another analysis skill:
+1. Use the supplied model and evidence as the source of truth.
+2. Identify the components, relationships, flows, states, and boundaries
+   that need visualization.
+3. Preserve names and terminology from the source analysis.
+4. Do not perform duplicate discovery or repository analysis.
 
-Bad: "Protocol" → "Frontend"
-Good: "AG-UI streams events (RUN_STARTED, STATE_DELTA, A2UI_UPDATE)" → "CopilotKit renders via createA2UIMessageRenderer()"
+If invoked directly by the user:
+1. Use information supplied by the user.
+2. Inspect source material only when necessary to construct the diagram.
+3. Distinguish known information from assumptions.
+4. Never invent technical relationships to make a diagram look complete.
 
-### Step 2: Understand Deeply
-Read the content. For each concept, ask:
-- What does this concept **DO**? (not what IS it)
-- What relationships exist between concepts?
-- What's the core transformation or flow?
-- **What would someone need to SEE to understand this?** (not just read about)
+### Step 2: Understand the Visual Semantics
+
+For each supplied concept, ask:
+
+- What role does this concept play in the supplied model?
+- What verified relationships exist between concepts?
+- What is the important transformation, interaction, or flow?
+- What would someone need to SEE to understand this?
+- Which details are evidence and which are merely presentation?
+
+Do not introduce new semantic relationships during this step.
 
 ### Step 3: Map Concepts to Patterns
 For each concept, find the visual pattern that mirrors its behavior:
@@ -118,13 +150,16 @@ Before writing syntax, mentally trace how the eye moves through the diagram. The
 
 #### Evidence Artifacts (Comprehensive diagrams)
 
-Include concrete examples that prove accuracy and help viewers learn:
-- **Notes** (sequence diagrams) for data payloads and message formats.
-- **Multi-line node labels** using `<br>` for concise inline evidence.
-- **Subgraph titles** to label regions.
-- **Companion .md files** for large payloads or code snippets that won't fit in node text.
+When evidence artifacts are supplied by the calling skill or source
+material, use them where they improve understanding:
 
-The key principle: **show what things actually look like**, not just what they're called.
+- Notes in sequence diagrams for verified payloads and message formats.
+- Multi-line node labels for concise evidence.
+- Subgraph titles for verified architectural boundaries.
+- Companion `.md` files when supplied evidence is too large for the diagram.
+
+Never fabricate evidence artifacts. If concrete examples were not supplied,
+prefer an accurate abstract diagram over invented specificity.
 
 #### Multi-Zoom (Comprehensive diagrams)
 
@@ -180,9 +215,13 @@ Do **not** use these types — they lack structural argument capability or are t
 ## Render & Validate (MANDATORY)
 
 **How to render:**
-```bash
-bash .claude/skills/mermaid-diagram-skill/references/render_mermaid.sh <path.mmd> [output.png]
-```
+Run `references/render_mermaid.sh` from this skill's installed directory:
+
+    bash <skill-dir>/references/render_mermaid.sh <path.mmd> [output.png]
+
+Resolve `<skill-dir>` from the location of this `SKILL.md`; do not assume
+a Claude-specific installation path.
+
 First run downloads mmdc via npx — may take ~30s.
 
 **The loop:**
@@ -216,12 +255,18 @@ First run downloads mmdc via npx — may take ~30s.
 
 ## Quality Checklist
 
-**Concept & Depth (check first for technical diagrams):**
-1. Research done: looked up actual specs, formats, event names?
-2. Evidence artifacts: Notes, multi-line node labels, companion `.md` for large payloads?
-3. Multi-zoom: summary flow + section subgraphs + detail labels?
-4. Concrete over abstract: real API names, real event names, not generic "Process"?
-5. Educational value: could someone learn from this diagram?
+Before finalizing any diagram:
+
+**Source Integrity**
+
+Check first for technical diagrams:
+
+1. Source of truth identified?
+2. Every material node comes from the supplied model or source material?
+3. Every material edge/relationship is supported by the supplied model?
+4. Uncertainty from the source analysis preserved?
+5. No invented APIs, calls, dependencies, states, payloads, or behavior?
+6. Concrete evidence used only when actually supplied or verified?
 
 **Diagram Design:**
 6. Isomorphism Test: does visual structure mirror the concept's behavior?
